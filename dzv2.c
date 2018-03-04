@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-char** mem_alloc( int num_strings, size_t buff_size ) {
+char** mem_string_alloc( int num_strings, size_t buff_size ) {
 	char** strings;
 
 	if ( !( strings = ( char** )malloc( num_strings * sizeof( char* ) ) ) ) {
@@ -11,7 +11,7 @@ char** mem_alloc( int num_strings, size_t buff_size ) {
 	}
 
 	for (int i = 0; i < num_strings; ++i ) {
-		if ( !( strings[i] = ( char* )malloc( buff_size * sizeof( char ) ) ) ) {
+		if ( !( strings[i] = ( char* )calloc( buff_size, sizeof( char ) ) ) ) {
 			printf( "[error]\n" );
 			return NULL;
 		}
@@ -40,25 +40,25 @@ bool delete_spaces( char** inp_strings, int val_of_strings, char** outp_strings 
 }
 
 
-/*void print_strings( char** strings, int num_strings ) {
+void print_strings( char** strings, int num_strings ) {
 	for ( int i = 0; i < num_strings; ++i ) {
 		printf ( "%s\n", strings[i] );
 	}
-}*/
+}
 
 
 int main() {
 	const size_t buff_size = 32;
 	int num_strings = 1;
-	char** strings;
+	char** strings = NULL;
 
-	if ( !(strings = mem_alloc(num_strings, buff_size) ) ) {
+	if ( !(strings = mem_string_alloc(num_strings, buff_size) ) ) {
 		printf( "[error]\n" );
 		return 0;
 	}
 
 	size_t *size_strings;
-	if ( !( size_strings = ( size_t* )malloc( num_strings * sizeof( size_t ) ) ) ) {
+	if ( !( size_strings = ( size_t* )calloc( num_strings, sizeof( size_t ) ) ) ) {
 		printf( "[error]\n" );
 		return 0;
 	}
@@ -67,6 +67,8 @@ int main() {
 	int j = 0;
 	char c;
 	size_strings[i] = buff_size;
+	
+	
 	while ( (c = getchar() ) != EOF ) {
 		if (c != '\n') {
 			strings[i][j] = c;
@@ -82,16 +84,15 @@ int main() {
 			size_strings = realloc( size_strings, num_strings * sizeof( size_t ) );
 			strings = realloc( strings, num_strings * sizeof( char* ) );
 			size_strings[num_strings - 1] = buff_size;
-			strings[num_strings - 1] = ( char* )malloc( size_strings[num_strings - 1] * sizeof( char ) );
+			strings[num_strings - 1] = ( char* )calloc( size_strings[num_strings - 1], sizeof( char ) );
 			i++;
 			j = 0;
 		}
 	}
 
 	char **new_strings = (char**)malloc(num_strings * sizeof(char*));
-
 	for ( int i = 0; i < num_strings; ++i) {
-		new_strings[i] = (char*)malloc(size_strings[i] * sizeof(char));
+		new_strings[i] = (char*)calloc(size_strings[i], sizeof(char));
 		// printf("%zd(size_strings[%d]\n", size_strings[i], i);
 	}
 
@@ -100,11 +101,7 @@ int main() {
 		return 0;
 	}
 
-	// print_strings( new_strings, num_strings );
-
-	for ( int i = 0; i < num_strings; ++i ) {
-		printf ( "%s\n", new_strings[i] );
-	}
+	print_strings( new_strings, num_strings );
 
 	for ( int i = 0; i < num_strings; ++i ) {
 		free( strings[i] );
