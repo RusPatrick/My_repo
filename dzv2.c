@@ -30,7 +30,7 @@ bool delete_spaces( char** inp_strings, int val_of_strings, char** outp_strings 
 		for ( int j = 0; inp_strings[i][j] != '\0'; ++j ) {
 			if (inp_strings[i][j] == ' ') {
 	            if (k == 0) continue;
-	            if (inp_strings[i][j + 1] == ' ') continue;
+	            if (inp_strings[i][j + 1]) continue;
 	        }
 	        outp_strings[i][k] = inp_strings[i][j];
 	        k++;
@@ -40,11 +40,11 @@ bool delete_spaces( char** inp_strings, int val_of_strings, char** outp_strings 
 }
 
 
-void print_strings( char** strings, int num_strings ) {
+/*void print_strings( char** strings, int num_strings ) {
 	for ( int i = 0; i < num_strings; ++i ) {
 		printf ( "%s\n", strings[i] );
 	}
-}
+}*/
 
 
 int main() {
@@ -94,9 +94,16 @@ int main() {
 		new_strings[i] = (char*)malloc(size_strings[i] * sizeof(char));
 	}
 
-	new_strings = delete_spaces( strings, num_strings, new_strings );
+	if (!(delete_spaces( strings, num_strings, new_strings )) ){
+		printf("[error]\n");
+		return 0;
+	}
 
-	print_strings( new_strings, num_strings );
+	// print_strings( new_strings, num_strings );
+
+	for ( int i = 0; i < num_strings; ++i ) {
+		printf ( "%s\n", strings[i] );
+	}
 
 	for ( int i = 0; i < num_strings; ++i ) {
 		free( strings[i] );
