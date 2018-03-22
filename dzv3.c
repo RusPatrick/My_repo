@@ -118,6 +118,12 @@ bool read_string_array ( struct dynamic_array * _string_array_storage ) {
 	return true;
 }
 
+void delete_spaces ( struct dynamic_array * _source_string_array, struct dynamic_array * _target_string_array ) {
+	for ( size_t i = 0; i < dynamic_array_get_size ( _source_string_array ); ++i ) {
+		if ( !)
+	}
+}
+
 void print_string_array ( struct dynamic_array * _string_array ) {
 	for ( size_t i = 0; i < dynamic_array_get_size ( _string_array ); ++i )
 		print_string ( ( struct dynamic_array * ) dynamic_array_get_object_at ( _string_array, i ) );
