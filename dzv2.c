@@ -5,7 +5,7 @@
 char** mem_string_alloc( int num_strings, size_t buff_size ) {
 	char** strings;
 
-	if ( !( strings = ( char** )malloc( num_strings * sizeof( char* ) ) ) ) {
+	if ( !( strings = ( char** )calloc( num_strings, sizeof( char* ) ) ) ) {
 		printf( "[error]\n" );
 		return NULL;
 	}
@@ -29,7 +29,7 @@ bool delete_spaces( char** inp_strings, int val_of_strings, char** outp_strings 
 		int k = 0;
 		for ( int j = 0; inp_strings[i][j] != '\0'; ++j ) {
 			if (inp_strings[i][j] == ' ') {
-	            if (k == 0) continue;
+	            // if (k == 0) continue;
 	            if (inp_strings[i][j + 1] == ' ') continue;
 	        }
 	        outp_strings[i][k] = inp_strings[i][j];
@@ -68,17 +68,18 @@ int main() {
 	char c;
 	size_strings[i] = buff_size;
 	
-	
+	// чтение из потока ввода
 	while ( (c = getchar() ) != EOF ) {
+        //читаем пока не встретим символ переноса строки
 		if (c != '\n') {
 			strings[i][j] = c;
-			if ( j == buff_size - 1 ) {
-				size_strings[i] += 32;
+            //Если введено количество символов равное размеру буффера, то увеличиваем буффер в 2 раза
+			if ( j == size_strings[i] - 1 ) {
+                size_strings[i] *= 2;
 				strings[i] = ( char* )realloc( strings[i], size_strings[i] * sizeof( char ) );
-				// printf ( "buff_size = %zi\n", buff_size );
 			}
 			j++;
-		} else {
+		} else {    //Если встречаем \n увеличиваем счетчик строк, выделяемпамять под новую строку и сбрасываем j
 			strings[i][j] = '\0';
 			num_strings++;
 			size_strings = realloc( size_strings, num_strings * sizeof( size_t ) );
@@ -90,7 +91,7 @@ int main() {
 		}
 	}
 
-	char **new_strings = (char**)malloc(num_strings * sizeof(char*));
+	char **new_strings = (char**)calloc(num_strings, sizeof(char*));
 	for ( int i = 0; i < num_strings; ++i) {
 		new_strings[i] = (char*)calloc(size_strings[i], sizeof(char));
 		// printf("%zd(size_strings[%d]\n", size_strings[i], i);
